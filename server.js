@@ -1,10 +1,11 @@
 const express = require('express');
+const req = require('express/lib/request');
 const app = express();
-
+const notes = require('./db/db.json');
 
 // GET
 app.get('/api/notes', (req, res) => {
-    res.send('Hiya, Welcome!');
+    res.json(notes);
 });
 
 app.listen(3001, () => {
