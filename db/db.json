@@ -2,5 +2,17 @@
     {
         "title":"Test Title",
         "text":"Test text"
+    },
+    {
+        "title":"HEB",
+        "text":"Milk, Eggs, Diapers"
+    },
+    {
+        "title":"PlayDate",
+        "text":"Playdate at the park for baby son"
+    },
+    {
+        "title":"Vet Appointment",
+        "text":"Take Jack, Abby and Nala to the Vet for yearly checkup."
     }
 ]
