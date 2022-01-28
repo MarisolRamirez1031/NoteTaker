@@ -7,7 +7,7 @@ const app = express();
 
 
 function findByQuery(title, notes) {
-    const notesTitle = notes.filer(note => note.title === title)[0];
+    const notesTitle = notes.filter(note => note.title === title)[0];
     return notesTitle;
 }
 
@@ -17,7 +17,7 @@ app.get('/api/notes', (req, res) => {
 });
 
 // GET note by title
-app.get('api/notes:title', (req, res) => {
+app.get('api/notes/:title', (req, res) => {
     const notesTitle = findByQuery(req.params.title, notes);
     res.json(notesTitle);
 });
