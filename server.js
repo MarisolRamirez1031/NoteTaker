@@ -31,7 +31,7 @@ app.get('/api/notes', (req, res) => {
 
 // GET req title only
 app.get('/api/notes/:title', (req, res) => {
-    const noteTitle = findByQuery(req.params.title, notesPost);
+    const noteTitle = findByQuery(req.query.title, notesPost);
     res.json(noteTitle);
 });
 
