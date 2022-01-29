@@ -13,20 +13,33 @@ class tags {
     }
 };
 
+// middleware 
+app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use(express.static('public'));
+
+
+// function to make a new note
+ function newNoteMade(body, notesArray) {
+     const note = body;
+     notesArray.push(note);
+     fs.writeFileSync(__dirname, './db/db.json'),JSON.stringify({notesPost: notesArray}, null, 2)
+ };
+
+
+
+
+// GET route 
+app.get('/api/notes', (req, res) => {
+    res.json(notesPost);
+  });
+
 
 // find by title 
 function findByQuery(title, notesPost) {
     const noteTitle = notesPost.filter(note => note.title === title)[0];
     return noteTitle;
 }
-
-// GET req all notes
-app.get('/api/notes', (req, res) => {
-    res.json(notesPost);
-  });
 
 // GET req title only
 app.get('/api/notes/:title', (req, res) => {
