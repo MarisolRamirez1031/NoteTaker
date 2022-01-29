@@ -6,6 +6,14 @@ const notesPost =  require('./db/db.json')
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+class tags {
+    constructor(id, title, text) {
+        this.id = id;
+        this.title = title;
+        this.text =text;
+    }
+};
+
 // find by title 
 function findByQuery(title, notesPost) {
     const noteTitle = notesPost.filter(note => note.title === title)[0];
@@ -17,11 +25,30 @@ app.get('/api/notes', (req, res) => {
     res.json(notesPost);
   });
 
-// GET req title
+// GET req title only
 app.get('/api/notes/:title', (req, res) => {
     const noteTitle = findByQuery(req.params.title, notesPost);
     res.json(noteTitle);
 });
+
+// POST for new notes
+let postNoteData;
+const postedNote = (body) => {
+    fs.readFile('./db/db.json', 'utf-8', function (err, data) {
+        postNoteData = data;
+        console.log(data);
+        notesPost.push(body);
+        fs.writeFile('./db/db.json', JSON.stringify(notesPost), () => {console.log('posted')})
+    })
+};
+
+app.post('/api/notes', (res, req) => {
+    let postBody = req.body;
+    let newBody = new tags(postBody.id, postBody.title, postBody.text);
+    console.log(newBody);
+    postedNote(newBody);
+    res.json(postNoteData);
+})
 
 
 
