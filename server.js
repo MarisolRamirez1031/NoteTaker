@@ -1,27 +1,33 @@
 const express = require('express');
-const notes = require('./db/db.json');
-const routes = require('./routes/routes');
+const fs = require('fs');
+const path = require('path');
+const notesPost =  require('./db/db.json')
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-
-
-function findByQuery(title, notes) {
-    const notesTitle = notes.filter(note => note.title === title)[0];
-    return notesTitle;
+// find by title 
+function findByQuery(title, notesPost) {
+    const noteTitle = notesPost.filter(note => note.title === title)[0];
+    return noteTitle;
 }
 
-// GET all notes
+// GET req all notes
 app.get('/api/notes', (req, res) => {
-    res.json(notes);
+    res.json(notesPost);
+  });
+
+// GET req title
+app.get('/api/notes/:title', (req, res) => {
+    const noteTitle = findByQuery(req.params.title, notesPost);
+    res.json(noteTitle);
 });
 
-// GET note by title
-app.get('api/notes/:title', (req, res) => {
-    const notesTitle = findByQuery(req.params.title, notes);
-    res.json(notesTitle);
-});
 
+
+
+
+// server listening
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}! 🌎`);
   });
