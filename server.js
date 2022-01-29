@@ -1,18 +1,22 @@
 const express = require('express');
 const fs = require('fs');
-const path = require('path');
-const notesPost =  require('./db/db.json')
+//const path = require('path');
+const notesPost = require('./db/db.json')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 class tags {
-    constructor(id, title, text) {
+    constructor(id, title, text){
         this.id = id;
         this.title = title;
-        this.text =text;
+        this.text = text;
     }
 };
+
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+app.use(express.static('public'));
 
 // find by title 
 function findByQuery(title, notesPost) {
@@ -32,27 +36,24 @@ app.get('/api/notes/:title', (req, res) => {
 });
 
 // POST for new notes
-let postNoteData;
-const postedNote = (body) => {
-    fs.readFile('./db/db.json', 'utf-8', function (err, data) {
-        postNoteData = data;
-        console.log(data);
-        notesPost.push(body);
-        fs.writeFile('./db/db.json', JSON.stringify(notesPost), () => {console.log('posted')})
-    })
+ let postNoteData;
+ const postedNote = (body) => {
+     fs.readFile('./db/db.json', 'utf-8', function (err, data) {
+         postNoteData = data;
+         console.log(data);
+         notesPost.push(body);
+         fs.writeFile('./db/db.json', JSON.stringify(notesPost), () => {console.log('posted')})
+     })
 };
 
 app.post('/api/notes', (res, req) => {
     let postBody = req.body;
+    postBody.id = notesPost.length;
     let newBody = new tags(postBody.id, postBody.title, postBody.text);
     console.log(newBody);
     postedNote(newBody);
     res.json(postNoteData);
-})
-
-
-
-
+});
 
 // server listening
 app.listen(PORT, () => {
