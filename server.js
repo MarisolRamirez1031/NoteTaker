@@ -1,8 +1,7 @@
 const express = require('express');
 const fs = require('fs');
-//const path = require('path');
+const path = require('path');
 const notesPost = require('./db/db.json')
-
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -33,6 +32,11 @@ app.get('/api/notes', (req, res) => {
 app.get('/api/notes/:title', (req, res) => {
     const noteTitle = findByQuery(req.query.title, notesPost);
     res.json(noteTitle);
+});
+
+// GET req to notes.html
+app.get('/notes', function(req,res) {
+    res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
 // POST for new notes
