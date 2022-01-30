@@ -42,14 +42,14 @@ app.get('/api/notes/:title', (req, res) => {
 });
 
 // join GET req to notes.html
-app.get('/notes', function(req, res) {
+app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
 // POST for new notes
  let allData;
  const createdNote = (body) => {
-     fs.readFile('./db/db.json', 'utf-8', function (err, data) {
+     fs.readFile('./db/db.json', 'utf-8', function(err, data) {
          allData = data;
          console.log(data);
          notesPost.push(body);
