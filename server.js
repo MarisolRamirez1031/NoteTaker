@@ -67,6 +67,10 @@ app.post('/api/notes', (req, res) => {
     res.json(allData);
 });
 
+// DELETE a note
+app.delete('/api/notes/:id', (req, res) => {
+    
+})
 
 // wildcard route
 app.get('*', (req, res) => {
