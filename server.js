@@ -16,7 +16,6 @@ class tags {
     }
 };
 
-
 // parse incoming string or array data
 app.use(express.urlencoded({extended:true}));
 // parse incoming JSON data
@@ -69,8 +68,10 @@ app.post('/api/notes', (req, res) => {
 
 // DELETE a note
 app.delete('/api/notes/:id', (req, res) => {
-    
-})
+    notesPost.splice(req.params.id, 1);
+    updateDb();
+    res.send('Deleted Note')
+});
 
 // wildcard route
 app.get('*', (req, res) => {
