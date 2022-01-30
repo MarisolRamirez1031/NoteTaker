@@ -1,7 +1,10 @@
+// Dependacies 
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const notesPost = require('./db/db.json')
+
+// setting up the app 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
@@ -13,8 +16,11 @@ class tags {
     }
 };
 
+
+// data parse handling 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+// handling files css/js
 app.use(express.static('public'));
 
 // find by title 
@@ -23,7 +29,8 @@ function findByQuery(title, notesPost) {
     return noteTitle;
 }
 
-// GET req all notes
+// Routes ==================================================
+// GET all notes
 app.get('/api/notes', (req, res) => {
     res.json(notesPost);
   });
