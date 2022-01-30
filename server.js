@@ -67,10 +67,9 @@ app.post('/api/notes', (req, res) => {
 });
 
 // DELETE a note
-app.delete('/api/notes/:id', (req, res) => {
-    notesPost.splice(req.params.id, 1);
-    updateDb();
-    res.send('Deleted Note')
+ app.delete('/api/notes/:id', (req, res) => {
+     notesPost.splice(req.params.id, 1);
+     res.send('Deleted Note');
 });
 
 // wildcard route
