@@ -13,27 +13,9 @@ class tags {
     }
 };
 
-// middleware 
-app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-
-
-// function to make a new note
- function newNoteMade(body, notesArray) {
-     const note = body;
-     notesArray.push(note);
-     fs.writeFileSync(__dirname, './db/db.json'),JSON.stringify({notesPost: notesArray}, null, 2)
- };
-
-
-
-
-// GET route 
-app.get('/api/notes', (req, res) => {
-    res.json(notesPost);
-  });
-
+app.use(express.static('public'));
 
 // find by title 
 function findByQuery(title, notesPost) {
@@ -41,35 +23,40 @@ function findByQuery(title, notesPost) {
     return noteTitle;
 }
 
+// GET req all notes
+app.get('/api/notes', (req, res) => {
+    res.json(notesPost);
+  });
+
 // GET req title only
 app.get('/api/notes/:title', (req, res) => {
     const noteTitle = findByQuery(req.query.title, notesPost);
     res.json(noteTitle);
 });
 
-// GET req to notes.html
-app.get('/notes', function(req,res) {
+// join GET req to notes.html
+app.get('/notes', function(req, res) {
     res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
 // POST for new notes
- let postNoteData;
- const postedNote = (body) => {
+ let allData;
+ const createdNote = (body) => {
      fs.readFile('./db/db.json', 'utf-8', function (err, data) {
-         postNoteData = data;
+         allData = data;
          console.log(data);
          notesPost.push(body);
-         fs.writeFile('./db/db.json', JSON.stringify(notesPost), () => {console.log('posted')})
+         fs.writeFile('./db/db.json', JSON.stringify(notesPost), () => {console.log('createdFile')})
      })
 };
 
-app.post('/api/notes', (res, req) => {
-    let postBody = req.body;
-    postBody.id = notesPost.length;
-    let newBody = new tags(postBody.id, postBody.title, postBody.text);
+app.post('/api/notes', (req, res) => {
+    let fileWritten = req.body;
+    fileWritten.id = notesPost.length;
+    let newBody = new tags(fileWritten.id, fileWritten.title, fileWritten.text);
     console.log(newBody);
-    postedNote(newBody);
-    res.json(postNoteData);
+    createdNote(newBody);
+    res.json(allData);
 });
 
 // server listening
