@@ -17,8 +17,9 @@ class tags {
 };
 
 
-// data parse handling 
+// parse incoming string or array data
 app.use(express.urlencoded({extended:true}));
+// parse incoming JSON data
 app.use(express.json());
 // handling files css/js
 app.use(express.static('public'));
@@ -65,6 +66,12 @@ app.post('/api/notes', (req, res) => {
     createdNote(newBody);
     res.json(allData);
 });
+
+
+// wildcard route
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+  });
 
 // server listening
 app.listen(PORT, () => {
